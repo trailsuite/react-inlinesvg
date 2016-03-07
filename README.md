@@ -45,6 +45,15 @@ var Isvg = require('react-inlinesvg');
 </Isvg>
 ```
 
+Building
+--------
+
+* `npm run test` to run tests
+* `npm run test-cov` to generate test coverage
+* `npm run build` to transform es6/es7 to es5 by Babel
+* `npm run clean` to clean `build/` directory
+* `npm run lint` to lint js using ESLint in Airbnb's Javascript style
+
 
 Props
 -----
@@ -117,8 +126,7 @@ Browser Support
 ---------------
 
 Any browsers that support inlining SVGs and XHR will work. The component goes
-out of its way to handle IE9's weird XHR support so, IE9 and up get your SVG;
-lesser browsers get the fallback.
+out of its way to handle IE9's weird XHR support so, IE9 and up geowsers get the fallback.
 
 
 CORS
