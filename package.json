@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "coffee-script": "~1.7.1",
-    "browserify": "~3.33.0",
+    "browserify": "~3.38.0",
     "browserify-shim": "~3.3.2",
     "gulp": "~3.8.11",
     "gulp-bump": "~0.1.6",
