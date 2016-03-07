@@ -1,0 +1,9 @@
+{
+  presets: ["es2015", "stage-0"],
+  moduleId: 'ReactInlineSVG',
+  env: {
+      production: {
+        plugins: ["transform-es2015-modules-umd"]
+      }
+    },
+}
