@@ -36,6 +36,56 @@ assertContainsSvg = (component, done) =>
 
 describe('react-inlinesvg', () =>
 {
+  describe('where httpplease has been mocked out', () =>
+  {
+    before(() =>
+    {
+      let getCallCount = 0;
+
+      mock('httpplease', {
+        use: (plugin) =>
+        {
+          return {
+            get: (src, callback) =>
+            {
+              setTimeout(() => callback(++getCallCount > 1 ? new Error('Unexpected Second Call') : null, svgResponse), 0)
+            }
+          }
+        }
+      });
+
+      let InlineSVG = require('../src/index').default
+      isvg = React.createFactory(InlineSVG);
+    })
+
+    it.only('should request an SVG only once when caching', done =>
+    {
+      let loadCallbacks = 0;
+
+      let component = TestUtils.renderIntoDocument(isvg({
+            src: 'https://raw.githubusercontent.com/google/material-design-icons/master/av/svg/production/ic_play_arrow_24px.svg',
+            onLoad: () => loadCallbacks++,
+            cacheGetRequests: true
+          }
+      ))
+
+      let secondComponent = TestUtils.renderIntoDocument(isvg({
+            src: 'https://raw.githubusercontent.com/google/material-design-icons/master/av/svg/production/ic_play_arrow_24px.svg',
+            onError: (err) =>
+            {
+              done(err);
+            },
+            onLoad: () =>
+            {
+              assert(loadCallbacks === 1)
+              done()
+            },
+            cacheGetRequests: true
+          }
+      ))
+    });
+  })
+
   describe('where get returns an svg response', () =>
   {
     before(() =>
