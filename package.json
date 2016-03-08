@@ -9,7 +9,7 @@
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test-cov": "babel-node isparta cover --report html --report text node_modules/.bin/_mocha",
-    "build": "babel src --out-file lib/index.js && babel src --out-file standalone/react-inlinesvg.js",
+    "build": "NODE_ENV=production babel src --out-file lib/index.js && babel src --out-file standalone/react-inlinesvg.js",
     "clean": "rm -rf lib",
     "lint": "eslint src test"
   },
