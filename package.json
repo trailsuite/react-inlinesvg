@@ -21,6 +21,7 @@
   "devDependencies": {
     "babel-cli": "6.6.5",
     "react-dom": "0.14.7",
+    "babel-plugin-transform-es2015-modules-umd": "6.6.5",
     "react-addons-test-utils": "0.14.7",
     "atob": "2.0.0",
     "mock-require": "1.2.1",
