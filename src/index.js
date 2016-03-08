@@ -174,10 +174,31 @@ configurationError = message => createError(message, {
   isConfigurationError: true
 });
 
+let getRequestsByUrl = {};
+
+let createGetOrUseCacheForUrl = (url, callback) => {
+  if( !getRequestsByUrl[url] )
+  {
+    getRequestsByUrl[url] = [];
+
+    http.get(url, (err, res) => {
+      getRequestsByUrl[url].forEach(function(callback)
+      {
+        callback(err, res);
+      })
+    });
+  }
+
+  getRequestsByUrl[url].push(callback);
+}
+
 export default React.createClass({
   statics: {
+    getRequestsByUrl,
+    createGetOrUseCacheForUrl,
     Status
   },
+
   displayName: 'InlineSVG',
   propTypes: {
     wrapper: PropTypes.func,
@@ -187,13 +208,15 @@ export default React.createClass({
     onLoad: PropTypes.func,
     onError: PropTypes.func,
     supportTest: PropTypes.func,
-    uniquifyIDs: PropTypes.bool
+    uniquifyIDs: PropTypes.bool,
+    cacheGetRequests: PropTypes.bool
   },
   getDefaultProps() {
     return {
       wrapper: span,
       supportTest: isSupportedEnvironment,
-      uniquifyIDs: true
+      uniquifyIDs: true,
+      cacheGetRequests: false
     };
   },
   getInitialState() {
@@ -264,7 +287,17 @@ export default React.createClass({
     }
     else
     {
-      return http.get(this.props.src, this.handleLoad);
+      if (this.props.cacheGetRequests)
+      {
+        return createGetOrUseCacheForUrl(
+            this.props.src,
+            this.handleLoad
+        )
+      }
+      else
+      {
+        return http.get(this.props.src, this.handleLoad);
+      }
     }
   },
   getClassName() {
