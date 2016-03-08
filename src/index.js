@@ -3,9 +3,6 @@
 import React from 'react';
 import once from 'once';
 import ieXDomain from 'httpplease/plugins/oldiexdomain';
-import atob from 'atob'
-
-global.atob = atob
 
 let httpplease = require('httpplease');
 

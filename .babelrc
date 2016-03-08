@@ -3,7 +3,15 @@
   moduleId: 'ReactInlineSVG',
   env: {
       production: {
-        plugins: ["transform-es2015-modules-umd"]
+        plugins: [
+          "add-module-exports",
+          "transform-es2015-modules-umd"
+        ]
+      },
+      development: {
+        plugins: [
+          "add-module-exports"
+        ]
       }
     },
 }
