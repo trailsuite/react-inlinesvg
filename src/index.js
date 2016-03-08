@@ -1,40 +1,51 @@
 "use strict"
 
+import React from 'react';
+import once from 'once';
+import ieXDomain from 'httpplease/plugins/oldiexdomain';
+import atob from 'atob'
+
+global.atob = atob
+
+let httpplease = require('httpplease');
+
 let InlineSVGError;
-let PropTypes;
-let React;
 let Status;
 let configurationError;
 let createError;
 let delay;
 let getHash;
-let http;
-let httpplease;
-let ieXDomain;
 let isSupportedEnvironment;
 let me;
-let once;
-let span;
 let supportsInlineSVG;
 let uniquifyIDs;
 let unsupportedBrowserError;
 const slice = [].slice;
-const extend = (child, parent) => { for (let key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+const extend = (child, parent) =>
+{
+  for (let key in parent)
+  {
+    if (hasProp.call(parent, key))
+    {
+      child[key] = parent[key];
+    }
+  }
+  function ctor()
+  {
+    this.constructor = child;
+  }
+
+  ctor.prototype = parent.prototype;
+  child.prototype = new ctor();
+  child.__super__ = parent.prototype;
+  return child;
+};
 var hasProp = {}.hasOwnProperty;
 
-React = require('react');
 
-once = require('once');
-
-httpplease = require('httpplease');
-
-ieXDomain = require('httpplease/plugins/oldiexdomain');
-
-PropTypes = React.PropTypes;
-
-span = React.DOM.span;
-
-http = httpplease.use(ieXDomain);
+let PropTypes = React.PropTypes;
+let span = React.DOM.span;
+let http = httpplease.use(ieXDomain);
 
 Status = {
   PENDING: 'pending',
@@ -44,9 +55,11 @@ Status = {
   UNSUPPORTED: 'unsupported'
 };
 
-supportsInlineSVG = once(() => {
+supportsInlineSVG = once(() =>
+{
   let div;
-  if (!document) {
+  if (!document)
+  {
     return false;
   }
   div = document.createElement('div');
@@ -54,7 +67,8 @@ supportsInlineSVG = once(() => {
   return div.firstChild && div.firstChild.namespaceURI === 'http://www.w3.org/2000/svg';
 });
 
-delay = fn => function() {
+delay = fn => function ()
+{
   let args, newFunc;
   args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
   newFunc = () => fn.apply(null, args);
@@ -63,32 +77,43 @@ delay = fn => function() {
 
 isSupportedEnvironment = once(() => ((typeof window !== "undefined" && window !== null ? window.XMLHttpRequest : void 0) || (typeof window !== "undefined" && window !== null ? window.XDomainRequest : void 0)) && supportsInlineSVG());
 
-uniquifyIDs = ((() => {
+uniquifyIDs = ((() =>
+{
   let idPattern, mkAttributePattern;
   mkAttributePattern = attr => `(?:(?:\\s|\\:)${attr})`;
   idPattern = RegExp(`(?:(${mkAttributePattern('id')})="([^"]+)")|(?:(${mkAttributePattern('href')}|${mkAttributePattern('role')}|${mkAttributePattern('arcrole')})="\\#([^"]+)")|(?:="url\\(\\#([^\\)]+)\\)")`, "g");
-  return (svgText, svgID) => {
+  return (svgText, svgID) =>
+  {
     let uniquifyID;
     uniquifyID = id => `${id}___${svgID}`;
-    return svgText.replace(idPattern, (m, p1, p2, p3, p4, p5) => {
-      if (p2) {
+    return svgText.replace(idPattern, (m, p1, p2, p3, p4, p5) =>
+    {
+      if (p2)
+      {
         return `${p1}="${uniquifyID(p2)}"`;
-      } else if (p4) {
+      }
+      else if (p4)
+      {
         return `${p3}="#${uniquifyID(p4)}"`;
-      } else if (p5) {
+      }
+      else if (p5)
+      {
         return `="url(#${uniquifyID(p5)})"`;
       }
     });
   };
 }))();
 
-getHash = str => {
+getHash = str =>
+{
   let chr, hash, i, j, ref;
   hash = 0;
-  if (!str) {
+  if (!str)
+  {
     return hash;
   }
-  for (i = j = 0, ref = str.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
+  for (i = j = 0, ref = str.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j)
+  {
     chr = str.charCodeAt(i);
     hash = (hash << 5) - hash + chr;
     hash = hash & hash;
@@ -96,7 +121,8 @@ getHash = str => {
   return hash;
 };
 
-InlineSVGError = ((superClass => {
+InlineSVGError = ((superClass =>
+{
   extend(InlineSVGError, superClass);
 
   InlineSVGError.prototype.name = 'InlineSVGError';
@@ -107,7 +133,8 @@ InlineSVGError = ((superClass => {
 
   InlineSVGError.prototype.isUnsupportedBrowserError = false;
 
-  function InlineSVGError(message1) {
+  function InlineSVGError(message1)
+  {
     this.message = message1;
   }
 
@@ -115,19 +142,26 @@ InlineSVGError = ((superClass => {
 
 }))(Error);
 
-createError = (message, attrs) => {
+createError = (message, attrs) =>
+{
   let err, k, v;
   err = new InlineSVGError(message);
-  for (k in attrs) {
-    if (!hasProp.call(attrs, k)) continue;
+  for (k in attrs)
+  {
+    if (!hasProp.call(attrs, k))
+    {
+      continue;
+    }
     v = attrs[k];
     err[k] = v;
   }
   return err;
 };
 
-unsupportedBrowserError = message => {
-  if (message == null) {
+unsupportedBrowserError = message =>
+{
+  if (message == null)
+  {
     message = 'Unsupported Browser';
   }
   return createError(message, {
@@ -159,7 +193,6 @@ export default React.createClass({
     return {
       wrapper: span,
       supportTest: isSupportedEnvironment,
-      loadResource: http.get,
       uniquifyIDs: true
     };
   },
@@ -169,18 +202,25 @@ export default React.createClass({
     };
   },
   componentDidMount() {
-    if (this.state.status !== Status.PENDING) {
+    if (this.state.status !== Status.PENDING)
+    {
       return;
     }
-    if (this.props.supportTest()) {
-      if (this.props.src) {
+    if (this.props.supportTest())
+    {
+      if (this.props.src)
+      {
         return this.setState({
           status: Status.LOADING
         }, this.load);
-      } else {
+      }
+      else
+      {
         return delay(((_this => () => _this.fail(configurationError('Missing source'))))(this))();
       }
-    } else {
+    }
+    else
+    {
       return delay(((_this => () => _this.fail(unsupportedBrowserError())))(this))();
     }
   },
@@ -189,42 +229,49 @@ export default React.createClass({
     status = error.isUnsupportedBrowserError ? Status.UNSUPPORTED : Status.FAILED;
     return this.setState({
       status
-    }, ((_this => () => {
+    }, ((_this => () =>
+    {
       let base;
       return typeof (base = _this.props).onError === "function" ? base.onError(error) : void 0;
     }))(this));
   },
   handleLoad(err, res) {
-    if (err) {
+    if (err)
+    {
       return this.fail(err);
     }
-    console.log(res);
-    if (!this.isMounted()) {
+    if (!this.isMounted())
+    {
       return;
     }
     return this.setState({
       loadedText: res.text,
       status: Status.LOADED
-    }, ((_this => () => {
+    }, ((_this => () =>
+    {
       let base;
       return typeof (base = _this.props).onLoad === "function" ? base.onLoad() : void 0;
     }))(this));
   },
   load() {
     let m, text;
-    if (m = this.props.src.match(/data:image\/svg[^,]*?(;base64)?,(.*)/)) {
+    if (m = this.props.src.match(/data:image\/svg[^,]*?(;base64)?,(.*)/))
+    {
       text = m[1] ? atob(m[2]) : decodeURIComponent(m[2]);
       return this.handleLoad(null, {
         text
       });
-    } else {
-      return this.props.loadResource(this.props.src, this.handleLoad);
+    }
+    else
+    {
+      return http.get(this.props.src, this.handleLoad);
     }
   },
   getClassName() {
     let className;
     className = `isvg ${this.state.status}`;
-    if (this.props.className) {
+    if (this.props.className)
+    {
       className += ` ${this.props.className}`;
     }
     return className;
@@ -238,19 +285,24 @@ export default React.createClass({
     }, this.renderContents());
   },
   processSVG(svgText) {
-    if (this.props.uniquifyIDs) {
+    if (this.props.uniquifyIDs)
+    {
       return uniquifyIDs(svgText, getHash(this.props.src));
-    } else {
+    }
+    else
+    {
       return svgText;
     }
   },
   renderContents() {
-    switch (this.state.status) {
+    switch (this.state.status)
+    {
       case Status.UNSUPPORTED:
         return this.props.children;
       case Status.PENDING:
       case Status.LOADING:
-        if (this.props.preloader) {
+        if (this.props.preloader)
+        {
           return new this.props.preloader;
         }
     }
