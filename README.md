@@ -52,7 +52,7 @@ Building
 * `npm run test-cov` to generate test coverage
 * `npm run build` to transform es6/es7 to es5 by Babel
 * `npm run clean` to clean `build/` directory
-* `npm run lint` to lint js using ESLint in Airbnb's Javascript style
+* `npm run lint` to lint js using ESLint in standards Javascript style
 
 
 Props
