@@ -1,6 +1,6 @@
 {
   "name": "react-inlinesvg-with-cache",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "An SVG loader for React, with caching",
   "main": "./lib/index.js",
   "directories": {
