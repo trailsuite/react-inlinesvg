@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/trailsuite/react-inlinesvg.svg?branch=master)](https://travis-ci.org/trailsuite/react-inlinesvg)
+
 react-inlinesvg
 ===============
 
