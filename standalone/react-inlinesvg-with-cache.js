@@ -244,13 +244,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  var getRequestsByUrl = {};
+	  var loadedIcons = {};
 
 	  var createGetOrUseCacheForUrl = function createGetOrUseCacheForUrl(url, callback) {
+	    if (loadedIcons[url]) {
+	      (function () {
+	        var params = loadedIcons[url];
+
+	        delay(function () {
+	          return callback(params[0], params[1]);
+	        })();
+	      })();
+	    }
+
 	    if (!getRequestsByUrl[url]) {
 	      getRequestsByUrl[url] = [];
 
 	      http.get(url, function (err, res) {
 	        getRequestsByUrl[url].forEach(function (callback) {
+	          loadedIcons[url] = [err, res];
 	          callback(err, res);
 	        });
 	      });
@@ -1005,7 +1017,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @internal
 	   */
 	  dangerouslyRenderMarkup: function (markupList) {
-	    console.log("ExecutionEnvironment.canUseDOM", ExecutionEnvironment.canUseDOM)
 	    !ExecutionEnvironment.canUseDOM ? process.env.NODE_ENV !== 'production' ? invariant(false, 'dangerouslyRenderMarkup(...): Cannot render markup in a worker ' + 'thread. Make sure `window` and `document` are available globally ' + 'before requiring React when unit testing or use ' + 'ReactDOMServer.renderToString for server rendering.') : invariant(false) : undefined;
 	    var nodeName;
 	    var markupByNodeName = {};
@@ -1119,7 +1130,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	console.log("ee typeof window !== 'undefined", typeof window !== 'undefined')
 	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 	/**

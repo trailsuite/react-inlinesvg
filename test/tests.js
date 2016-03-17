@@ -83,6 +83,30 @@ describe('react-inlinesvg', () =>
           }
       ))
     })
+
+    it('it should call load on newly instantiated icons even if cached', done =>
+    {
+      let component = TestUtils.renderIntoDocument(isvg({
+            src: 'https://raw.githubusercontent.com/google/material-design-icons/master/av/svg/production/ic_play_arrow_24px.svg',
+            onLoad: () => {
+              let secondComponent = TestUtils.renderIntoDocument(isvg({
+                    src: 'https://raw.githubusercontent.com/google/material-design-icons/master/av/svg/production/ic_play_arrow_24px.svg',
+                    onError: (err) =>
+                    {
+                      done(err)
+                    },
+                    onLoad: () =>
+                    {
+                      done()
+                    },
+                    cacheGetRequests: true
+                  }
+              ))
+            },
+            cacheGetRequests: true
+          }
+      ))
+    })
   })
 
   describe('where get returns an svg response', () =>

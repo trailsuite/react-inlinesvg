@@ -172,8 +172,16 @@ configurationError = message => createError(message, {
 });
 
 let getRequestsByUrl = {};
+let loadedIcons = {};
 
 let createGetOrUseCacheForUrl = (url, callback) => {
+  if( loadedIcons[url] )
+  {
+    let params = loadedIcons[url];
+
+    delay(() => callback(params[0], params[1]))();
+  }
+
   if( !getRequestsByUrl[url] )
   {
     getRequestsByUrl[url] = [];
@@ -181,6 +189,7 @@ let createGetOrUseCacheForUrl = (url, callback) => {
     http.get(url, (err, res) => {
       getRequestsByUrl[url].forEach(function(callback)
       {
+        loadedIcons[url] = [err, res];
         callback(err, res);
       })
     });
