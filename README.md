@@ -125,7 +125,7 @@ Props
     <td><code>cacheGetRequests</code></td>
     <td>boolean</td>
     <td>
-      A boolean that tells Isvg to only request svgs once. Default is <code>false</code> but you can alter the behaviour by setting the boolean to <code>true</code>.
+      A boolean that tells Isvg to only request svgs once. Default is <code>true</code> but you can alter the behaviour by setting the boolean to <code>false</code>.
 
       <code>&lt;Isvg cacheGetRequests={true}&gt;&lt;/Isvg&gt;</code>
     </td>

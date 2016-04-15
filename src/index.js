@@ -222,7 +222,7 @@ export default React.createClass({
       wrapper: span,
       supportTest: isSupportedEnvironment,
       uniquifyIDs: true,
-      cacheGetRequests: false
+      cacheGetRequests: true
     };
   },
   getInitialState() {
