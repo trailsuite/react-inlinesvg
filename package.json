@@ -45,7 +45,7 @@
     "webpack": "1.12.14"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": "^0.14.7"
   },
   "repository": {
     "type": "git",
