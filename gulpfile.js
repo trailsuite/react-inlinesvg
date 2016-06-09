@@ -36,6 +36,7 @@ gulp.task('build:node', function() {
         'stage-1'
       ],
       plugins: [
+        'babel-plugin-rewire',
         'add-module-exports'
 	  ]
     }))

@@ -1,5 +1,4 @@
 import jsdom from 'jsdom';
-
 const doc = jsdom.jsdom('<!doctype html><html><body></body></html>', { url: 'http://localhost:1337' });
 const win = doc.defaultView; // get the window object out of the document
 

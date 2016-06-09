@@ -2,9 +2,9 @@ import React from 'react';
 import once from 'once';
 import httpplease from 'httpplease';
 import ieXDomain from 'httpplease/plugins/oldiexdomain';
-
 import { shouldComponentUpdate } from './shouldComponentUpdate';
-
+console.log(httpplease.name)
+console.dir(httpplease)
 const http = httpplease.use(ieXDomain);
 
 const Status = {
@@ -193,6 +193,8 @@ export default class InlineSVG extends React.Component {
         text: match[1] ? atob(match[2]) : decodeURIComponent(match[2])
       });
     }
+    console.log(httpplease.name)
+    console.log(http)
 
     return http.get(this.props.src, this.handleLoad);
   }
